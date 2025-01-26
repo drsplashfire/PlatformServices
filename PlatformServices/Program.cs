@@ -8,7 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+builder.Services.AddAutoMapper( AppDomain.CurrentDomain.GetAssemblies( ) );
+
 builder.Services.AddDbContext<AppDbContext>( options => options.UseInMemoryDatabase( "InMem" ) );
+builder.Services.AddScoped<IPlatformRepo, PlatformRepo>( );
 
 var app = builder.Build();
 
@@ -17,6 +20,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+PrepDb.PrepPopulation( app );
 
 app.UseHttpsRedirection();
 
